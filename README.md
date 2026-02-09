@@ -21,38 +21,37 @@ The system takes your input (keyboard/mouse) and turns it into a 3D audio experi
 ```mermaid
 graph TD
     subgraph Inputs [User Inputs]
-        KB[Keyboard (WASD)] -->|Move Position| Logic
-        Mouse[Mouse Drag] -->|Rotate View| Logic
-        UI[Settings Panel] -->|Adjust Audio| Logic
+        KB[Keyboard WASD] --> Tracker
+        Mouse[Mouse Drag] --> Tracker
+        UI[Settings Panel] --> State
     end
 
-    subgraph Logic [App Logic (React)]
+    subgraph Logic [App Logic React]
         Tracker[User Tracker]
         State[State Manager]
     end
 
     subgraph AudioEngine [Web Audio API]
-        Listener[Audio Listener (Your Ears)]
+        Listener[Audio Listener]
+        Processor[3D Panner & Filter]
         
         subgraph Sources [Sound Sources]
-            Water[Water Synthesizer]
-            Wind[Wind Synthesizer]
-            Elephant[Elephant Synthesizer]
-            Birds[Bird Synthesizer]
+            Water[Water Synth]
+            Wind[Wind Synth]
+            Elephant[Elephant Synth]
+            Birds[Bird Synth]
         end
-        
-        Processor[3D Panner & Filter Nodes]
     end
 
     subgraph Output [Output Device]
-        Speakers[Speakers / Headphones]
+        Speakers[Speakers]
     end
 
     %% Connections
-    Logic -->|Update Position/Rotation| Listener
-    Logic -->|Update Volume/Tone| Processor
-
-    Sources --> Processor
+    Tracker -->|Update Position| Listener
+    State -->|Update Settings| Processor
+    
+    Water & Wind & Elephant & Birds --> Processor
     Processor --> Listener
     Listener --> Speakers
 ```
