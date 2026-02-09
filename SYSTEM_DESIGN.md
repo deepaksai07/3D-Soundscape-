@@ -15,24 +15,35 @@ This diagram shows the flow of data from the **Physical World** (User Input) thr
 ```mermaid
 graph TD
     subgraph Input_Stage [1. Input Logic & Electronics]
-        KB[Keyboard/Mouse Sensors] -->|Electric Signals| CPU[Processor/Embedded Logic]
-        GUI[User Interface Controls] -->|Parameters| CPU
+        KB[Keyboard Mouse Sensors] --> CPU
+        GUI[User Interface Controls] --> CPU
     end
 
     subgraph Processing_Stage [2. DSP & Embedded Logic]
-        CPU -->|State: Position X,Y,Z| Spatializer[3D Spatializer DSP]
-        CPU -->|State: Environment| Effects[Environmental Effects DSP]
+        CPU[Processor Embedded Logic]
+        Spatializer[3D Spatializer DSP]
+        Effects[Environmental Effects DSP]
+        Synthesizer[Digital Signal Generation]
+        Mixer[Audio Mixer]
         
-        Synthesizer[Digital Signal Generation] -->|Raw Audio Data| Spatializer
-        Spatializer -->|Left/Right Channels| Mixer[Audio Mixer]
-        Effects -->|Reverb/Echo| Mixer
+        CPU -->|State Position| Spatializer
+        CPU -->|State Environment| Effects
+        
+        Synthesizer -->|Raw Audio Data| Spatializer
+        Spatializer -->|Left Right Channels| Mixer
+        Effects -->|Reverb Echo| Mixer
     end
 
     subgraph Output_Stage [3. Electronics & Acoustics]
-        Mixer -->|Digital Audio Stream| DAC[Digital-to-Analog Converter]
-        DAC -->|Analog Voltage| Amp[Amplifier]
-        Amp -->|Electrical Current| Speaker[Headphones/Speakers]
-        Speaker -->|Sound Waves| Ear[Human Ear (Acoustics)]
+        DAC[Digital to Analog Converter]
+        Amp[Amplifier]
+        Speaker[Headphones Speakers]
+        Ear[Human Ear Acoustics]
+        
+        Mixer -->|Digital Audio Stream| DAC
+        DAC -->|Analog Voltage| Amp
+        Amp -->|Electrical Current| Speaker
+        Speaker -->|Sound Waves| Ear
     end
 ```
 
